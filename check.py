@@ -20,7 +20,7 @@ response = urlopen(url).read()
 currentHash = hashlib.sha224(response).hexdigest()
 print("running")
 
-to = ["carl.yifeng.li@outlook.com", "lixt2002@gmail.com"]
+to = ["carl.yifeng.li@outlook.com", "lixt2002@gmail.com", "leo.liu20@imperial.ac.uk"]
 time_interval = 300
 
 while True:
