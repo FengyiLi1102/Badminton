@@ -7,10 +7,10 @@ from urllib.request import urlopen, Request
 from send import send_email
 
 # setting the URL you want to monitor
-# url = Request('https://www.union.ic.ac.uk/acc/badminton/sessions/view/index.php?sid=89603',
-#               headers={'User-Agent': 'Mozilla/5.0'})
-url = Request("https://www.union.ic.ac.uk/acc/badminton/sessions/view/index.php?sid=89606",
+url = Request('https://www.union.ic.ac.uk/acc/badminton/sessions/view/index.php?sid=89603',
               headers={'User-Agent': 'Mozilla/5.0'})
+# url = Request("https://www.union.ic.ac.uk/acc/badminton/sessions/view/index.php?sid=89606",
+#               headers={'User-Agent': 'Mozilla/5.0'})
 
 # to perform a GET request and load the
 # content of the website and store it in a var
