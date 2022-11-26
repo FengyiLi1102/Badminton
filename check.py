@@ -6,45 +6,44 @@ from urllib.request import urlopen, Request
 
 from send import send_email
 
-# setting the URL you want to monitor
-# url = Request('https://www.union.ic.ac.uk/acc/badminton/sessions/view/index.php?sid=89603',
-#               headers={'User-Agent': 'Mozilla/5.0'})
-url = Request("https://www.union.ic.ac.uk/acc/badminton/sessions/view/index.php?sid=89606",
-              headers={'User-Agent': 'Mozilla/5.0'})
 
-# to perform a GET request and load the
-# content of the website and store it in a var
-response = urlopen(url).read()
+def read_hash(url):
+    response = urlopen(url).read()
+    return hashlib.sha224(response).hexdigest()
+
+
+# setting the URL you want to monitor
+url_Tues = Request('https://www.union.ic.ac.uk/acc/badminton/sessions/view/index.php?sid=89603',
+                   headers={'User-Agent': 'Mozilla/5.0'})
+url_Mon = Request("https://www.union.ic.ac.uk/acc/badminton/sessions/view/index.php?sid=89602",
+                  headers={'User-Agent': 'Mozilla/5.0'})
 
 # to create the initial hash
-currentHash = hashlib.sha224(response).hexdigest()
+currentHash_Tue = read_hash(url_Tues)
+currentHash_Mon = read_hash(url_Mon)
 print("running")
 
 to = ["carl.yifeng.li@outlook.com", "lixt2002@gmail.com", "leoliu4720@gmail.com"]
-time_interval = 300
+time_interval = 120
 
 while True:
     try:
-        # perform the get request and store it in a var
-        response = urlopen(url).read()
-
         # create a hash
-        currentHash = hashlib.sha224(response).hexdigest()
+        currentHash_Tues = read_hash(url_Tues)
+        currentHash_Mon = read_hash(url_Mon)
 
         # wait for 30 seconds
         time.sleep(time_interval)
 
         # perform the get request
-        response = urlopen(url).read()
-
-        # create a new hash
-        newHash = hashlib.sha224(response).hexdigest()
+        newHash_Mon = read_hash(url_Mon)
+        newHash_Tue = read_hash(url_Tues)
 
         # Present time
         time_now = "[{}]".format(datetime.datetime.now())
 
         # check if new hash is same as the previous hash
-        if newHash == currentHash:
+        if (newHash_Mon == currentHash_Mon) and (newHash_Tue == currentHash_Tue):
             print(" ".join([time_now, "No change"]))
             continue
 
@@ -57,10 +56,8 @@ while True:
             send_email(to)
 
             # again read the website
-            response = urlopen(url).read()
-
-            # create a hash
-            currentHash = hashlib.sha224(response).hexdigest()
+            currentHash_Tue = read_hash(url_Tues)
+            currentHash_Mon = read_hash(url_Mon)
 
             # wait for 30 seconds
             time.sleep(time_interval)
